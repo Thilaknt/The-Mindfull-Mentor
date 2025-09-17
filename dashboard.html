@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dashboard - The Mindful Mentor</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-b from-indigo-50 to-white text-gray-800">
+
+  <!-- Header -->
+  <header class="flex justify-between items-center px-8 py-4 bg-white shadow-md">
+    <h1 class="text-2xl font-bold text-indigo-600">The Mindful Mentor</h1>
+    <nav class="space-x-6">
+      <a href="homepage.html" class="text-gray-700 hover:text-indigo-600">Home</a>
+      <a href="#" class="text-gray-700 hover:text-indigo-600">Mood Tracker</a>
+      <a href="api.html" class="text-gray-700 hover:text-indigo-600">Chat</a>
+      <a href="settings.html" class="text-gray-700 hover:text-indigo-600">Settings</a>
+    </nav>
+  </header>
+
+  <!-- Dashboard Section -->
+  <section class="px-6 py-16 max-w-2xl mx-auto">
+    <h2 class="text-3xl font-bold text-gray-900 text-center">Your Dashboard</h2>
+
+    <!-- User Input -->
+    <div class="mt-8 p-6 bg-white rounded-2xl shadow">
+      <label for="mood" class="block text-lg font-semibold text-gray-700">How are you feeling today?</label>
+      <input id="mood" type="text" placeholder="e.g. Stressed, Happy, Tired"
+             class="mt-3 w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none"/>
+
+      <button onclick="showRecommendation()"
+              class="mt-4 px-6 py-2 bg-indigo-600 text-white rounded-full hover:bg-indigo-700 transition">
+        Get Recommendation
+      </button>
+    </div>
+
+    <!-- Recommendation Output + Next Button -->
+    <div id="recommendation-box" class="mt-6 hidden p-6 bg-indigo-50 border border-indigo-200 rounded-xl shadow">
+      <h3 class="text-xl font-semibold text-indigo-700">Recommendation</h3>
+      <p id="recommendation-text" class="mt-2 text-gray-700"></p>
+
+      <!-- Next Button (link set by JS) -->
+      <a id="next-link"
+         class="mt-6 inline-block px-6 py-3 bg-indigo-600 text-white font-semibold rounded-full shadow hover:bg-indigo-700 transition">
+        Next →
+      </a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-indigo-600 text-white text-center py-6">
+    <p>&copy; 2025 The Mindful Mentor. All rights reserved.</p>
+  </footer>
+
+  <!-- Script -->
+  <script>
+    function showRecommendation() {
+      const mood = document.getElementById("mood").value.trim().toLowerCase();
+      const box = document.getElementById("recommendation-box");
+      const text = document.getElementById("recommendation-text");
+      const nextLink = document.getElementById("next-link");
+
+      if (!mood) {
+        text.innerText = "Please enter your current mood to get a recommendation.";
+        box.classList.remove("hidden");
+        nextLink.href = "exercise.html?exercise=general";
+        return;
+      }
+
+      // Define keywords for each exercise type
+      const mapping = {
+        relaxation: ["stressed", "anxious", "overwhelmed", "nervous", "tense"],
+        sleep: ["tired", "sleepy", "exhausted", "fatigued"],
+        focus: ["happy", "excited", "motivated", "energetic"]
+      };
+
+      let exerciseType = "general"; // default
+      let message = "Try exploring one of our Guided Exercises for balance and wellness.";
+
+      // Check which exercise matches the user's mood
+      for (const [type, keywords] of Object.entries(mapping)) {
+        if (keywords.some(keyword => mood.includes(keyword))) {
+          exerciseType = type;
+          if (type === "relaxation") message = "You seem stressed. Try the Relaxation exercise to calm your mind.";
+          if (type === "sleep") message = "You might need rest. Try the Sleep exercise for deep relaxation.";
+          if (type === "focus") message = "Great! Maintain your positivity with a short Focus exercise.";
+          break;
+        }
+      }
+
+      text.innerText = message;
+      nextLink.href = "exercise.html?exercise=" + exerciseType;
+      box.classList.remove("hidden");
+    }
+  </script>
+
+</body>
+</html>

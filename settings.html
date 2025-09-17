@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Settings — The Mindful Mentor</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-b from-indigo-50 to-white text-gray-800">
+
+  <!-- Header -->
+  <header class="flex justify-between items-center px-8 py-4 bg-white shadow-md">
+    <h1 class="text-2xl font-bold text-indigo-600">The Mindful Mentor</h1>
+    <nav class="space-x-6">
+      <a href="homepage.html" class="text-gray-700 hover:text-indigo-600">Home</a>
+      <a href="dashboard.html" class="text-gray-700 hover:text-indigo-600">Mood Tracker</a>
+      <a href="api.html" class="text-gray-700 hover:text-indigo-600">Chat</a>
+      
+      <a href="settings.html" class="text-gray-700 hover:text-indigo-600">Settings</a>
+    </nav>
+  </header>
+
+  <!-- Settings Hero -->
+  <section class="flex flex-col items-center text-center px-6 py-16">
+    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 leading-tight">
+      Personalize Your Mindful Mentor Experience
+    </h2>
+    <p class="mt-4 text-gray-600 max-w-2xl">
+      Control preferences and account settings to make the app work for you.
+    </p>
+  </section>
+
+  <!-- Settings Cards -->
+  <section class="max-w-4xl mx-auto px-6 py-10 grid md:grid-cols-2 gap-6">
+
+    <!-- Account Card -->
+    <div class="bg-white rounded-2xl shadow p-6">
+      <h3 class="text-xl font-semibold text-indigo-600">Account</h3>
+      <p class="mt-1 text-gray-500 text-sm">View or update your profile info</p>
+      <div class="mt-4 space-y-3">
+        <div class="flex justify-between items-center">
+          <div>
+            <strong id="account-name">Guest User</strong><br>
+            <small id="account-email" class="text-gray-400">guest@example.com</small>
+          </div>
+          <button id="logout-btn" class="px-4 py-2 bg-indigo-600 text-white rounded-full hover:bg-indigo-700 transition">
+            Logout
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Preferences Card (Updated for Daily Exercises) -->
+    <div class="bg-white rounded-2xl shadow p-6">
+      <h3 class="text-xl font-semibold text-indigo-600">Daily Exercises</h3>
+      <p class="mt-1 text-gray-500 text-sm">Your recommended daily wellness activities</p>
+      <div class="mt-4 space-y-4">
+        <ul class="list-disc list-inside text-gray-700">
+          <li>5 min Breathing Exercise</li>
+          <li>10 min Guided Meditation</li>
+          <li>5 min Journaling</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="bg-red-100 rounded-2xl shadow p-6">
+      <h3 class="text-xl font-semibold text-red-600">Emergency Helpline</h3>
+      <p class="mt-1 text-red-500 text-sm">If you are in distress, contact immediately</p>
+      <div class="mt-4 space-y-2">
+        <p><strong>National Mental Health Helpline:</strong> 1800-599-0019</p>
+        <p><strong>Suicide Prevention Helpline:</strong> 022-2754-6669</p>
+        <p><strong>Emergency Ambulance:</strong> 108</p>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-indigo-600 text-white text-center py-6">
+    <p>&copy; 2025 The Mindful Mentor. All rights reserved.</p>
+  </footer>
+
+  <script>
+    const $ = id => document.getElementById(id);
+
+    // Load user info from login
+    function loadUser(){
+      const user = JSON.parse(localStorage.getItem('mm.user'));
+      if(user){
+        $('account-name').textContent = user.name;
+        $('account-email').textContent = user.email;
+      }
+    }
+    loadUser();
+
+    // Logout
+    $('logout-btn').addEventListener('click', ()=>{
+      localStorage.removeItem('mm.user');
+      location.href = "login.html";
+    });
+  </script>
+</body>
+</html>

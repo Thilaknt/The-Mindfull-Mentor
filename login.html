@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Login / Signup</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    :root {
+      --purple-1: #2b0380;
+      --purple-2: #35beec;
+      --bg: #e9eef8;
+    }
+    body {
+      background: var(--bg);
+      min-height: 100vh;
+      font-family: Inter, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .container {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 14px 30px rgba(20,25,40,0.15);
+      position: relative;
+      overflow: hidden;
+      width: 900px;
+      max-width: 100%;
+      min-height: 400px;
+    }
+    .form-container {
+      position: absolute;
+      top: 0;
+      height: 100%;
+      width: 50%;
+      transition: all 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    }
+    .sign-in-container { left: 0; z-index: 2; }
+    .sign-up-container { left: 0; opacity: 0; z-index: 1; }
+    .container.right-panel-active .sign-up-container {
+      transform: translateX(100%);
+      opacity: 1; z-index: 5; animation: show 0.6s;
+    }
+    .container.right-panel-active .sign-in-container {
+      transform: translateX(100%);
+      opacity: 0; z-index: 1;
+    }
+    @keyframes show {
+      0% { opacity: 0; transform: translateX(50%); }
+      100% { opacity: 1; transform: translateX(0); }
+    }
+    .overlay-container {
+      position: absolute;
+      top: 0; left: 50%;
+      width: 50%; height: 100%;
+      overflow: hidden;
+      transition: transform 0.6s ease-in-out;
+      z-index: 100;
+    }
+    .container.right-panel-active .overlay-container { transform: translateX(-100%); }
+    .overlay {
+      background: linear-gradient(135deg, var(--purple-2), var(--purple-1));
+      color: #fff;
+      position: relative;
+      left: -100%; height: 100%; width: 200%;
+      transform: translateX(0);
+      transition: transform 0.6s ease-in-out;
+      display: flex;
+    }
+    .container.right-panel-active .overlay { transform: translateX(50%); }
+    .overlay-panel {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding: 0 40px;
+      text-align: center;
+      top: 0; height: 100%; width: 50%;
+      transition: transform 0.6s ease-in-out;
+    }
+    .overlay-left { transform: translateX(-20%); left: 0; }
+    .container.right-panel-active .overlay-left { transform: translateX(0); }
+    .overlay-right { right: 0; transform: translateX(0); }
+    .container.right-panel-active .overlay-right { transform: translateX(20%); }
+    .field {
+      background: #f3f3f3;
+      border: 1px solid rgba(0,0,0,0.05);
+      padding: 12px 16px;
+      margin: 8px 0;
+      border-radius: 8px;
+      width: 100%;
+    }
+    .btn-purple {
+      margin-top: 12px;
+      border-radius: 8px;
+      padding: 10px 20px;
+      background: linear-gradient(180deg,var(--purple-2), var(--purple-1));
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      box-shadow: 0 8px 20px rgba(75,45,138,0.12);
+    }
+    .ghost {
+      background: transparent;
+      border: 2px solid #fff;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="container">
+    <!-- Sign Up -->
+    <div class="form-container sign-up-container flex items-center justify-center p-8">
+      <form class="w-4/5" autocomplete="off">
+        <h2 class="text-2xl font-bold mb-4">Create Account</h2>
+        <input class="field" type="text" placeholder="Name" required autocomplete="off" />
+        <input class="field" type="email" placeholder="Email" required autocomplete="off" />
+        <input class="field" type="password" placeholder="Password" required autocomplete="new-password" />
+        <button class="btn-purple" type="submit">Sign Up</button>
+      </form>
+    </div>
+
+    <!-- Sign In -->
+    <div class="form-container sign-in-container flex items-center justify-center p-8">
+      <form class="w-4/5" autocomplete="off">
+        <h2 class="text-2xl font-bold mb-4">Sign In</h2>
+        <input class="field" type="email" placeholder="Email" required autocomplete="off" />
+        <input class="field" type="password" placeholder="Password" required autocomplete="new-password" />
+        <a href="#" class="text-sm text-gray-500 underline">Forgot your password?</a>
+        <button class="btn-purple" type="submit">Sign In</button>
+      </form>
+    </div>
+
+    <!-- Overlay -->
+    <div class="overlay-container">
+      <div class="overlay">
+        <div class="overlay-panel overlay-left">
+          <h2 class="text-2xl font-bold mb-2">Welcome Back!</h2>
+          <p class="mb-4">To keep connected with us please login with your personal info</p>
+          <button class="btn-purple ghost" id="signIn">Sign In</button>
+        </div>
+        <div class="overlay-panel overlay-right">
+          <h2 class="text-2xl font-bold mb-2">Hello, Friend!</h2>
+          <p class="mb-4">Enter your details and start your journey with us</p>
+          <button class="btn-purple ghost" id="signUp">Sign Up</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Panel animation
+    const container = document.getElementById('container');
+    document.getElementById('signUp').addEventListener('click', () => {
+      container.classList.add("right-panel-active");
+    });
+    document.getElementById('signIn').addEventListener('click', () => {
+      container.classList.remove("right-panel-active");
+    });
+
+    // Sign-in logic
+    const signInForm = document.querySelector('.sign-in-container form');
+    if (signInForm) {
+      signInForm.addEventListener('submit', function(event) {
+          event.preventDefault();
+          const email = signInForm.querySelector('input[type="email"]').value;
+          const password = signInForm.querySelector('input[type="password"]').value;
+
+          const storedEmail = localStorage.getItem("userEmail");
+          const storedPassword = localStorage.getItem("userPassword");
+
+          if (email === storedEmail && password === storedPassword) {
+              alert('Sign in successful! Redirecting to homepage...');
+              window.location.href = 'dashboard.html';
+          } else {
+              alert('Invalid email or password. Please try again.');
+          }
+      });
+    }
+
+    // Sign-up logic
+    const signUpForm = document.querySelector('.sign-up-container form');
+    if (signUpForm) {
+      signUpForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const name = signUpForm.querySelector('input[placeholder="Name"]').value;
+        const email = signUpForm.querySelector('input[type="email"]').value;
+        const password = signUpForm.querySelector('input[type="password"]').value;
+
+        localStorage.setItem("userEmail", email);
+        localStorage.setItem("userPassword", password);
+
+        alert("Account created successfully! Please sign in now.");
+        container.classList.remove("right-panel-active");
+      });
+    }
+  </script>
+</body>
+</html>

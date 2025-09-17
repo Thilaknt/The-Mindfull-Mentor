@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Guided Exercises - The Mindful Mentor</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-b from-indigo-50 to-white text-gray-800">
+
+  <!-- Header -->
+  <header class="flex justify-between items-center px-8 py-4 bg-white shadow-md">
+    <h1 class="text-2xl font-bold text-indigo-600">The Mindful Mentor</h1>
+    <nav class="space-x-6">
+      <a href="homepage.html" class="text-gray-700 hover:text-indigo-600">Home</a>
+      <a href="#" class="text-gray-700 hover:text-indigo-600">Mood Tracker</a>
+      <a href="api.html" class="text-gray-700 hover:text-indigo-600">Chat</a>
+      
+      <a href="#" class="text-gray-700 hover:text-indigo-600">Settings</a>
+    </nav>
+  </header>
+
+  <!-- Guided Exercises Section -->
+  <section class="px-6 py-16 max-w-lg mx-auto">
+    <h2 class="text-3xl font-bold text-gray-900 text-center">Guided Exercises</h2>
+    <div class="mt-10 space-y-6">
+
+      <!-- Relaxation -->
+      <div id="card-relaxation" class="exercise-card flex justify-between items-center p-5 bg-white rounded-2xl shadow hover:shadow-lg transition">
+        <div>
+          <h3 class="text-xl font-semibold text-gray-900">Relaxation</h3>
+          <p class="text-sm text-gray-500">Calm your mind & reduce stress</p>
+        </div>
+        <button class="px-4 py-2 bg-indigo-600 text-white rounded-full hover:bg-indigo-700 transition">
+          Start
+        </button>
+      </div>
+
+      <!-- Focus -->
+      <div id="card-focus" class="exercise-card flex justify-between items-center p-5 bg-white rounded-2xl shadow hover:shadow-lg transition">
+        <div>
+          <h3 class="text-xl font-semibold text-gray-900">Focus</h3>
+          <p class="text-sm text-gray-500">Improve concentration & clarity</p>
+        </div>
+        <button class="px-4 py-2 bg-indigo-600 text-white rounded-full hover:bg-indigo-700 transition">
+          Start
+        </button>
+      </div>
+
+      <!-- Sleep -->
+      <div id="card-sleep" class="exercise-card flex justify-between items-center p-5 bg-white rounded-2xl shadow hover:shadow-lg transition">
+        <div>
+          <h3 class="text-xl font-semibold text-gray-900">Sleep</h3>
+          <p class="text-sm text-gray-500">Drift into deep, restful sleep</p>
+        </div>
+        <button class="px-4 py-2 bg-indigo-600 text-white rounded-full hover:bg-indigo-700 transition">
+          Start
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Exercise Display Box -->
+    <div id="exercise-box" class="mt-10 hidden p-6 bg-indigo-50 border border-indigo-200 rounded-xl shadow">
+      <h3 id="exercise-title" class="text-xl font-semibold text-indigo-700"></h3>
+      <p id="exercise-text" class="mt-2 text-gray-700"></p>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-indigo-600 text-white text-center py-6">
+    <p>&copy; 2025 The Mindful Mentor. All rights reserved.</p>
+  </footer>
+
+  <!-- Script -->
+  <script>
+    function startExercise(type) {
+      const box = document.getElementById("exercise-box");
+      const title = document.getElementById("exercise-title");
+      const text = document.getElementById("exercise-text");
+
+      // Reset card highlights
+      document.querySelectorAll('.exercise-card').forEach(card => {
+        card.classList.remove("border-2", "border-indigo-500", "bg-indigo-50");
+      });
+
+      // Update exercise content
+      if (type === "relaxation") {
+        title.innerText = "Relaxation Exercise";
+        text.innerText = "Close your eyes, take a deep breath in for 4 seconds, hold for 4 seconds, then slowly exhale for 6 seconds. Repeat for 5 minutes.";
+      } else if (type === "focus") {
+        title.innerText = "Focus Exercise";
+        text.innerText = "Pick an object around you. Observe its details for 2 minutes—shape, color, and texture. If your mind wanders, gently bring it back.";
+      } else if (type === "sleep") {
+        title.innerText = "Sleep Exercise";
+        text.innerText = "Lie down comfortably. Relax each part of your body from toes to head. Breathe deeply and let your thoughts fade away.";
+      } else {
+        title.innerText = "General Exercise";
+        text.innerText = "Take a few moments to sit quietly, breathe deeply, and center yourself.";
+      }
+
+      // Highlight the selected card
+      const card = document.getElementById("card-" + type);
+      if (card) {
+        card.classList.add("border-2", "border-indigo-500", "bg-indigo-50");
+        card.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+
+      box.classList.remove("hidden");
+    }
+
+    // Auto-start exercise if query parameter exists
+    window.onload = function () {
+      const urlParams = new URLSearchParams(window.location.search);
+      const exercise = urlParams.get("exercise");
+      if (exercise) startExercise(exercise);
+
+      // Make the entire card clickable
+      document.querySelectorAll('.exercise-card').forEach(card => {
+        card.addEventListener('click', () => {
+          const type = card.id.replace('card-', '');
+          startExercise(type);
+        });
+      });
+    };
+  </script>
+
+</body>
+</html>
