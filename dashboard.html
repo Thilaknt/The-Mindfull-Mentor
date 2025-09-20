@@ -13,9 +13,10 @@
     <h1 class="text-2xl font-bold text-indigo-600">The Mindful Mentor</h1>
     <nav class="space-x-6">
       <a href="homepage.html" class="text-gray-700 hover:text-indigo-600">Home</a>
-      <a href="#" class="text-gray-700 hover:text-indigo-600">Mood Tracker</a>
+      <a href="#" class="text-gray-700 hover:text-indigo-600">Journal</a>
       <a href="api.html" class="text-gray-700 hover:text-indigo-600">Chat</a>
-      <a href="settings.html" class="text-gray-700 hover:text-indigo-600">Settings</a>
+      <a href="#" class="text-gray-700 hover:text-indigo-600">Resources</a>
+      <a href="#" class="text-gray-700 hover:text-indigo-600">About</a>
     </nav>
   </header>
 
@@ -56,43 +57,44 @@
   <!-- Script -->
   <script>
     function showRecommendation() {
-      const mood = document.getElementById("mood").value.trim().toLowerCase();
+      const moodInput = document.getElementById("mood").value.trim();
       const box = document.getElementById("recommendation-box");
       const text = document.getElementById("recommendation-text");
       const nextLink = document.getElementById("next-link");
 
+      // Save mood (used by exercise page)
+      const mood = moodInput || "";
+      localStorage.setItem("mm.mood", mood.toLowerCase());
+
+      let exerciseType = "general";
+      let message = "";
+
       if (!mood) {
-        text.innerText = "Please enter your current mood to get a recommendation.";
-        box.classList.remove("hidden");
-        nextLink.href = "exercise.html?exercise=general";
-        return;
-      }
-
-      // Define keywords for each exercise type
-      const mapping = {
-        relaxation: ["stressed", "anxious", "overwhelmed", "nervous", "tense"],
-        sleep: ["tired", "sleepy", "exhausted", "fatigued"],
-        focus: ["happy", "excited", "motivated", "energetic"]
-      };
-
-      let exerciseType = "general"; // default
-      let message = "Try exploring one of our Guided Exercises for balance and wellness.";
-
-      // Check which exercise matches the user's mood
-      for (const [type, keywords] of Object.entries(mapping)) {
-        if (keywords.some(keyword => mood.includes(keyword))) {
-          exerciseType = type;
-          if (type === "relaxation") message = "You seem stressed. Try the Relaxation exercise to calm your mind.";
-          if (type === "sleep") message = "You might need rest. Try the Sleep exercise for deep relaxation.";
-          if (type === "focus") message = "Great! Maintain your positivity with a short Focus exercise.";
-          break;
-        }
+        message = "Please enter your current mood to get a recommendation.";
+      } else if (mood.toLowerCase().includes("stress") || mood.toLowerCase().includes("anxious") || mood.toLowerCase().includes("overwhelm")) {
+        message = "You seem stressed. Try the Relaxation exercise to calm your mind.";
+        exerciseType = "relaxation";
+      } else if (mood.toLowerCase().includes("tired") || mood.toLowerCase().includes("sleep") || mood.toLowerCase().includes("exhaust")) {
+        message = "You might need rest. Try the Sleep exercise for deep relaxation.";
+        exerciseType = "sleep";
+      } else if (mood.toLowerCase().includes("happy") || mood.toLowerCase().includes("motivated") || mood.toLowerCase().includes("energetic")) {
+        message = "Great! Maintain your positivity with a short Focus exercise.";
+        exerciseType = "focus";
+      } else {
+        message = "Try exploring one of our Guided Exercises for balance and wellness.";
+        exerciseType = "general";
       }
 
       text.innerText = message;
-      nextLink.href = "exercise.html?exercise=" + exerciseType;
+      // Link to exercise page and keep the mood in localStorage for richer AI suggestions
+      nextLink.href = "exercise.html?exercise=" + encodeURIComponent(exerciseType);
       box.classList.remove("hidden");
     }
+
+    // allow Enter to submit quickly
+    document.getElementById("mood").addEventListener("keydown", function(e){
+      if (e.key === "Enter") showRecommendation();
+    });
   </script>
 
 </body>
