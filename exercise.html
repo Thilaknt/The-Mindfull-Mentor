@@ -2,128 +2,224 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Guided Exercises - The Mindful Mentor</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mindful Mentor - Exercises</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gradient-to-b from-indigo-50 to-white text-gray-800">
+<body class="bg-gradient-to-br from-purple-100 to-indigo-200 min-h-screen flex flex-col items-center p-6">
 
-  <!-- Header -->
-  <header class="flex justify-between items-center px-8 py-4 bg-white shadow-md">
-    <h1 class="text-2xl font-bold text-indigo-600">The Mindful Mentor</h1>
-    <nav class="space-x-6">
-      <a href="homepage.html" class="text-gray-700 hover:text-indigo-600">Home</a>
-      <a href="#" class="text-gray-700 hover:text-indigo-600">Mood Tracker</a>
-      <a href="api.html" class="text-gray-700 hover:text-indigo-600">Chat</a>
-      
-      <a href="#" class="text-gray-700 hover:text-indigo-600">Settings</a>
-    </nav>
-  </header>
+  <h1 class="text-3xl font-bold text-purple-800 mb-4">Mindful Exercises</h1>
+  <p class="text-gray-700 mb-6 text-center">Choose from guided practices or get personalized AI recommendations.</p>
 
-  <!-- Guided Exercises Section -->
-  <section class="px-6 py-16 max-w-lg mx-auto">
-    <h2 class="text-3xl font-bold text-gray-900 text-center">Guided Exercises</h2>
-    <div class="mt-10 space-y-6">
+  <!-- AI Recommendations -->
+  <div class="w-full max-w-2xl bg-white shadow-lg rounded-2xl p-4 mb-6">
+    <h2 class="text-xl font-semibold mb-2 text-purple-700">AI-Powered Suggestions</h2>
+    <button id="aiBtn" onclick="getAISuggestions()" 
+      class="bg-purple-600 text-white px-4 py-2 rounded-xl hover:bg-purple-700">
+      Get AI Recommendations
+    </button>
+    <div id="aiSuggestions" class="mt-4 text-gray-700 whitespace-pre-line"></div>
+  </div>
 
-      <!-- Relaxation -->
-      <div id="card-relaxation" class="exercise-card flex justify-between items-center p-5 bg-white rounded-2xl shadow hover:shadow-lg transition">
-        <div>
-          <h3 class="text-xl font-semibold text-gray-900">Relaxation</h3>
-          <p class="text-sm text-gray-500">Calm your mind & reduce stress</p>
-        </div>
-        <button class="px-4 py-2 bg-indigo-600 text-white rounded-full hover:bg-indigo-700 transition">
-          Start
-        </button>
-      </div>
-
-      <!-- Focus -->
-      <div id="card-focus" class="exercise-card flex justify-between items-center p-5 bg-white rounded-2xl shadow hover:shadow-lg transition">
-        <div>
-          <h3 class="text-xl font-semibold text-gray-900">Focus</h3>
-          <p class="text-sm text-gray-500">Improve concentration & clarity</p>
-        </div>
-        <button class="px-4 py-2 bg-indigo-600 text-white rounded-full hover:bg-indigo-700 transition">
-          Start
-        </button>
-      </div>
-
-      <!-- Sleep -->
-      <div id="card-sleep" class="exercise-card flex justify-between items-center p-5 bg-white rounded-2xl shadow hover:shadow-lg transition">
-        <div>
-          <h3 class="text-xl font-semibold text-gray-900">Sleep</h3>
-          <p class="text-sm text-gray-500">Drift into deep, restful sleep</p>
-        </div>
-        <button class="px-4 py-2 bg-indigo-600 text-white rounded-full hover:bg-indigo-700 transition">
-          Start
-        </button>
-      </div>
-
+  <!-- Exercise Library -->
+  <div class="grid gap-4 w-full max-w-2xl">
+    <div id="card-boxbreathing" class="p-4 bg-white rounded-2xl shadow">
+      <h3 class="text-lg font-semibold">Box Breathing</h3>
+      <p class="text-gray-600">Inhale 4s → Hold 4s → Exhale 4s → Hold 4s. Repeat.</p>
+      <button onclick="startExercise('Box Breathing')" 
+        class="bg-indigo-500 text-white px-3 py-1 rounded-lg hover:bg-indigo-600">
+        Start
+      </button>
     </div>
 
-    <!-- Exercise Display Box -->
-    <div id="exercise-box" class="mt-10 hidden p-6 bg-indigo-50 border border-indigo-200 rounded-xl shadow">
-      <h3 id="exercise-title" class="text-xl font-semibold text-indigo-700"></h3>
-      <p id="exercise-text" class="mt-2 text-gray-700"></p>
+    <div id="card-bodyscan" class="p-4 bg-white rounded-2xl shadow">
+      <h3 class="text-lg font-semibold">Body Scan Meditation</h3>
+      <p class="text-gray-600">Close your eyes, notice sensations from head to toe.</p>
+      <button onclick="startExercise('Body Scan Meditation')" 
+        class="bg-indigo-500 text-white px-3 py-1 rounded-lg hover:bg-indigo-600">
+        Start
+      </button>
     </div>
-  </section>
 
-  <!-- Footer -->
-  <footer class="bg-indigo-600 text-white text-center py-6">
-    <p>&copy; 2025 The Mindful Mentor. All rights reserved.</p>
-  </footer>
+    <div id="card-gratitude" class="p-4 bg-white rounded-2xl shadow">
+      <h3 class="text-lg font-semibold">Gratitude Journaling</h3>
+      <p class="text-gray-600">Write down 3 things you are grateful for today.</p>
+      <button onclick="startExercise('Gratitude Journaling')" 
+        class="bg-indigo-500 text-white px-3 py-1 rounded-lg hover:bg-indigo-600">
+        Start
+      </button>
+    </div>
+  </div>
 
-  <!-- Script -->
+  <!-- Exercise Status -->
+  <div id="exerciseStatus" class="mt-6 text-purple-800 font-medium"></div>
+  <div id="motivation" class="mt-3 text-green-700 italic"></div>
+
   <script>
-    function startExercise(type) {
-      const box = document.getElementById("exercise-box");
-      const title = document.getElementById("exercise-title");
-      const text = document.getElementById("exercise-text");
+    const API_KEY = "AIzaSyDtTvoFxUKE4du2IAsnZsgF4eReDdLDZI4"; // Gemini API key (exposed here for local use)
+    const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateText?key=${API_KEY}`;
 
-      // Reset card highlights
-      document.querySelectorAll('.exercise-card').forEach(card => {
-        card.classList.remove("border-2", "border-indigo-500", "bg-indigo-50");
-      });
-
-      // Update exercise content
-      if (type === "relaxation") {
-        title.innerText = "Relaxation Exercise";
-        text.innerText = "Close your eyes, take a deep breath in for 4 seconds, hold for 4 seconds, then slowly exhale for 6 seconds. Repeat for 5 minutes.";
-      } else if (type === "focus") {
-        title.innerText = "Focus Exercise";
-        text.innerText = "Pick an object around you. Observe its details for 2 minutes—shape, color, and texture. If your mind wanders, gently bring it back.";
-      } else if (type === "sleep") {
-        title.innerText = "Sleep Exercise";
-        text.innerText = "Lie down comfortably. Relax each part of your body from toes to head. Breathe deeply and let your thoughts fade away.";
-      } else {
-        title.innerText = "General Exercise";
-        text.innerText = "Take a few moments to sit quietly, breathe deeply, and center yourself.";
-      }
-
-      // Highlight the selected card
-      const card = document.getElementById("card-" + type);
-      if (card) {
-        card.classList.add("border-2", "border-indigo-500", "bg-indigo-50");
-        card.scrollIntoView({ behavior: "smooth", block: "center" });
-      }
-
-      box.classList.remove("hidden");
+    // Save exercise history
+    function saveExercise(type) {
+      const exercises = JSON.parse(localStorage.getItem("mm.exercises")) || [];
+      exercises.push({ date: new Date().toISOString().split("T")[0], type });
+      localStorage.setItem("mm.exercises", JSON.stringify(exercises));
     }
 
-    // Auto-start exercise if query parameter exists
-    window.onload = function () {
-      const urlParams = new URLSearchParams(window.location.search);
-      const exercise = urlParams.get("exercise");
-      if (exercise) startExercise(exercise);
+    // Start exercise
+    function startExercise(type) {
+      document.getElementById("exerciseStatus").innerText = `🧘 Starting ${type}...`;
+      saveExercise(type);
+      getMotivation(type);
+      highlightCardForExercise(type);
+    }
 
-      // Make the entire card clickable
-      document.querySelectorAll('.exercise-card').forEach(card => {
-        card.addEventListener('click', () => {
-          const type = card.id.replace('card-', '');
-          startExercise(type);
-        });
+    // Highlight helper for built-in exercises
+    function highlightCardForExercise(exName) {
+      const map = {
+        "Box Breathing": "card-boxbreathing",
+        "Body Scan Meditation": "card-bodyscan",
+        "Gratitude Journaling": "card-gratitude",
+        "relaxation": "card-bodyscan",
+        "focus": "card-boxbreathing",
+        "sleep": "card-bodyscan",
+        "general": "card-gratitude"
+      };
+      ["card-boxbreathing","card-bodyscan","card-gratitude"].forEach(id=>{
+        const el=document.getElementById(id);
+        if(el) el.classList.remove("border-2","border-indigo-500","bg-indigo-50");
       });
-    };
+      const id = map[exName];
+      if(id){
+        const el = document.getElementById(id);
+        if(el) el.classList.add("border-2","border-indigo-500","bg-indigo-50");
+      }
+    }
+
+    // Local fallback suggestions (guarantees output if API fails)
+    function localSuggestions(mood) {
+      const m = (mood || "neutral").toLowerCase();
+      if (m.includes("stress") || m.includes("anxious") || m.includes("overwhelm")) {
+        return `1) Relaxing Breathing\n- Sit comfortably\n- Inhale 4s, hold 4s, exhale 6s\n- Repeat 6 cycles\nBenefit: Calms the nervous system.\n\n2) Gentle Body Scan\n- Close eyes and notice toes → head\n- Breathe slowly\n- Release tension where you find it\nBenefit: Brings you back to the body.\n\n3) Short Gratitude Pause\n- Name 3 small things you're grateful for\n- Breathe after each one\nBenefit: Shifts focus away from worry.\n\nRECOMMENDED_EXERCISE: Body Scan Meditation`;
+      } else if (m.includes("tired") || m.includes("sleep") || m.includes("exhaust")) {
+        return `1) Progressive Relaxation\n- Tense then relax each muscle group\n- Move slowly up the body\n- Finish with slow breaths\nBenefit: Releases physical tension.\n\n2) Soothing Breath\n- Inhale 4s, exhale 6s for 3 minutes\n- Keep shoulders soft\nBenefit: Prepares body for rest.\n\n3) Gratitude Reflection\n- Recall a calm memory for 2 minutes\nBenefit: Lowers arousal and stress.\n\nRECOMMENDED_EXERCISE: Body Scan Meditation`;
+      } else if (m.includes("happy") || m.includes("good") || m.includes("energ")) {
+        return `1) Focus Boost (Pomodoro-style)\n- Pick a small task\n- Work 10 minutes focused, breathe between\n- Celebrate a tiny win\nBenefit: Channels positive energy into action.\n\n2) Box Breathing Quick Set\n- 4s inhale, 4s hold, 4s exhale, 4s hold x4\nBenefit: Stabilizes attention.\n\n3) Gratitude Writing\n- List 3 wins from today\nBenefit: Reinforces positivity.\n\nRECOMMENDED_EXERCISE: Box Breathing`;
+      } else {
+        return `1) Box Breathing\n- Inhale 4s, hold 4s, exhale 4s, hold 4s x5\nBenefit: Centers attention.\n\n2) Body Scan\n- Scan toes → head slowly\nBenefit: Grounds awareness.\n\n3) Gratitude Journal\n- Write 3 things you're grateful for\nBenefit: Improves mood.\n\nRECOMMENDED_EXERCISE: Box Breathing`;
+      }
+    }
+
+    // Parse "RECOMMENDED_EXERCISE" line
+    function parseRecommendedExercise(text) {
+      if (!text) return null;
+      const lines = text.split(/\r?\n/).map(l=>l.trim()).filter(Boolean);
+      for (let i = lines.length - 1; i >= 0; i--) {
+        const l = lines[i].toUpperCase();
+        if (l.startsWith("RECOMMENDED_EXERCISE:")) {
+          return lines[i].split(":")[1]?.trim();
+        }
+      }
+      return null;
+    }
+
+    // AI Recommendations (with fallback)
+    async function getAISuggestions(autoStart=false) {
+      const mood = (localStorage.getItem("mm.mood") || "neutral").trim();
+      const container = document.getElementById("aiSuggestions");
+      container.innerText = "Fetching suggestions…";
+
+      const prompt = `You are a friendly mindfulness assistant. The available on-page exercises are:
+- Box Breathing
+- Body Scan Meditation
+- Gratitude Journaling
+
+A student feels "${mood}". Suggest 3 short, clear mindfulness exercises tailored to that mood.
+For each suggestion include:
+1) Title
+2) 3–4 simple steps
+3) One-line benefit
+
+At the END include a single line in this exact format so the page can parse it:
+RECOMMENDED_EXERCISE: <one of: Box Breathing | Body Scan Meditation | Gratitude Journaling>
+
+Keep the response concise and human-readable.`;
+
+      try {
+        const res = await fetch(API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+        });
+
+        if (!res.ok) {
+          throw new Error(`API ${res.status}`);
+        }
+
+        const data = await res.json();
+        const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+        if (text && text.trim().length > 0) {
+          container.innerText = text;
+          const rec = parseRecommendedExercise(text);
+          if (rec) {
+            highlightCardForExercise(rec);
+            if (autoStart) startExercise(rec);
+            return;
+          }
+        }
+
+        // fallback to local suggestions if API response not usable
+        const fallback = localSuggestions(mood);
+        container.innerText = fallback;
+        const recFallback = parseRecommendedExercise(fallback);
+        if (recFallback) {
+          highlightCardForExercise(recFallback);
+          if (autoStart) startExercise(recFallback);
+        }
+      } catch (err) {
+        console.error("AI request failed:", err);
+        // show helpful fallback and highlight
+        const fallback = localSuggestions(mood);
+        container.innerText = fallback + "\n\n(Displayed local suggestions because AI request failed.)";
+        const rec = parseRecommendedExercise(fallback);
+        if (rec) {
+          highlightCardForExercise(rec);
+          if (autoStart) startExercise(rec);
+        }
+      }
+    }
+
+    // AI Motivation message
+    async function getMotivation(type) {
+      const prompt = `Give me a short motivational message (one or two sentences) for someone who just completed ${type}.`;
+      try {
+        const res = await fetch(API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+        });
+        if (!res.ok) throw new Error("motivation API error");
+        const data = await res.json();
+        const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+        document.getElementById("motivation").innerText = text || "Great job completing your exercise!";
+      } catch (err) {
+        console.error(err);
+        document.getElementById("motivation").innerText = "Great job completing your exercise!";
+      }
+    }
+
+    // On load: auto-call suggestions; if there's an exercise query param, autoStart true
+    window.addEventListener("load", function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const exerciseParam = urlParams.get("exercise");
+      const autoStart = Boolean(exerciseParam);
+      // If simple keyword was passed (relaxation/focus/sleep), highlight that mapping immediately
+      if (exerciseParam) highlightCardForExercise(exerciseParam);
+      // Request AI suggestions (will fallback to local if needed)
+      getAISuggestions(autoStart);
+    });
   </script>
 
 </body>
 </html>
+```<!-- filepath: c:\Users\thila\OneDrive\Desktop\mindful mentor\exercise.html -->
